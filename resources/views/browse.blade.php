@@ -45,7 +45,7 @@
                                 <thead>
                                 <tr role="row">
                                     <th class="sorting">Имя</th>
-{{--                                    <th class="sorting">Слаг</th>--}}
+                                    {{--                                    <th class="sorting">Слаг</th>--}}
                                     <th class="sorting">Создан</th>
                                     <th class="sorting">Обновлен</th>
                                     <th class="actions sorting">Действие</th></tr>
@@ -56,7 +56,7 @@
 
                                     <tr role="row" class="odd">
                                         <td width="150">{{ $poll->name }}</td>
-{{--                                        <td>{{ $poll->slug }}</td>--}}
+                                        {{--                                        <td>{{ $poll->slug }}</td>--}}
                                         <td>{{ Carbon\Carbon::parse($poll->created_at)->toDayDateTimeString() }}</td>
                                         <td>{{ Carbon\Carbon::parse($poll->modified_at)->toDayDateTimeString() }}</td>
                                         <td>
@@ -72,6 +72,15 @@
                                             <a href="{{ route('voyager.polls.read', ['id' => $poll->id]) }}" class="btn-sm btn-warning pull-left">
                                                 <i class="voyager-eye"></i><span class=" hidden-xs hidden-sm"> Результаты</span>
                                             </a>
+                                            &nbsp;&nbsp;
+                                            <a target="_blank" href="/get_pie?poll_id={{$poll->id}}" class="btn-sm btn-warning pull-left">
+                                                <i class="voyager-eye"></i><span class=" hidden-xs hidden-sm"> График Pie</span>
+                                            </a>
+                                            &nbsp;&nbsp;
+                                            <a target="_blank" href="/get_bar?poll_id={{$poll->id}}" class="btn-sm btn-warning pull-left">
+                                                <i class="voyager-eye"></i><span class=" hidden-xs hidden-sm"> График Bar</span>
+                                            </a>
+                                            &nbsp;&nbsp;
                                         </td>
                                     </tr>
 
@@ -117,16 +126,16 @@
 @endsection
 @section('javascript')
     <!-- DataTables -->
-{{--    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>--}}
-{{--    <script src="{{ voyager_asset('lib/js/dataTables.responsive.min.js') }}"></script>--}}
-{{--    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>--}}
-{{--    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>--}}
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>--}}
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>--}}
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>--}}
-{{--    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>--}}
-{{--    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>--}}
-{{--    <link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet">--}}
+    {{--    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>--}}
+    {{--    <script src="{{ voyager_asset('lib/js/dataTables.responsive.min.js') }}"></script>--}}
+    {{--    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>--}}
+    {{--    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>--}}
+    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>--}}
+    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>--}}
+    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>--}}
+    {{--    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>--}}
+    {{--    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>--}}
+    {{--    <link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet">--}}
 
     <script>
         $('document').ready(function(){
@@ -143,14 +152,14 @@
     <script>
         $(document).ready(function () {
             var table = $('#dataTable').DataTable(
-                {!! json_encode(
-                array_merge([
-                    "order" => [[ 0, "asc" ]],
-                    "language" => __('voyager::datatable'),
-                    "columnDefs" => [['targets' => -1, 'searchable' =>  true, 'orderable' => true]],
-                ],
-                config('voyager.dashboard.data_tables', []))
-            , true) !!}
+                    {!! json_encode(
+                    array_merge([
+                        "order" => [[ 0, "asc" ]],
+                        "language" => __('voyager::datatable'),
+                        "columnDefs" => [['targets' => -1, 'searchable' =>  true, 'orderable' => true]],
+                    ],
+                    config('voyager.dashboard.data_tables', []))
+                , true) !!}
             );
 
             $('.select_all').on('click', function(e) {
