@@ -50,137 +50,141 @@
 
 
 			<div id="polls">
-                <div class="container-fluid">
-                    <div class="col-md-12">
-                        <a href="{{ route('voyager.polls') }}" class="polls-back"><i class="voyager-angle-left"></i> Назад</a>
-                    </div>
-                    <div class="col-md-12">
-                        <ul class="nav nav-pills">
-                            <li class="active"><a data-toggle="pill" href="#home">Результаты опроса</a></li>
-                            <li><a data-toggle="pill" href="#menu1">График 1</a></li>
-                            <li><a data-toggle="pill" href="#menu2">График 2</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="tab-content">
-                    <div id="home" class="tab-pane fade in active">
+				<div class="container-fluid">
+					<div class="col-md-12">
+						<a href="{{ route('voyager.polls') }}" class="polls-back"><i class="voyager-angle-left"></i> Назад</a>
+					</div>
+					<div class="col-md-12">
+						<ul class="nav nav-pills">
+							<li class="active"><a data-toggle="pill" href="#home">Результаты опроса</a></li>
+							<li><a data-toggle="pill" href="#menu1">График 1</a></li>
+							<li><a data-toggle="pill" href="#menu2">График 2</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="tab-content">
+					<div id="home" class="tab-pane fade in active">
 
-                        <div class="container-fluid">
-                            <div class="col-md-6">
-                                <poll slug="{{ $poll->slug }}" prefix="{{ env('ROUTE_PREFIX') }}"></poll>
-                            </div>
-                            @if($poll->type == 'variant')
+						<div class="container-fluid">
+							<div class="col-md-6">
+								<poll slug="{{ $poll->slug }}" prefix="{{ env('ROUTE_PREFIX') }}"></poll>
+							</div>
+							@if($poll->type == 'variant')
 
-                                <table id="dataTable" width="100%" class="table table-hover dataTable no-footer type-{{ $poll->type }}" role="grid" aria-describedby="dataTable_info">
-                                    <thead>
-                                    <tr role="row">
-                                        <th>#</th>
-                                        <th class="sorting">Имя</th>
-                                        <th class="sorting">Ответ</th>
-                                        <th class="sorting">Время</th>
-                                    </thead>
-                                    <tbody>
-                                    @if($answer_correct)
-                                        @php
-                                            $i=1;
+								<table id="dataTable" width="100%" class="table table-hover dataTable no-footer type-{{ $poll->type }}" role="grid" aria-describedby="dataTable_info">
+									<thead>
+									<tr role="row">
+										<th>#</th>
+										<th class="sorting">Имя</th>
+										<th class="sorting">Группа</th>
+										<th class="sorting">Ответ</th>
+										<th class="sorting">Время</th>
+									</thead>
+									<tbody>
+									@if($answer_correct)
+										@php
+											$i=1;
                                             $correct_num = 0;
                                             $incorrect_num = 0;
-                                        @endphp
-                                        @foreach($answer_correct as $answer)
-                                            <tr role="row" class="@if($answer->id == $answer->correct) correct @else not_correct @endif">
-                                                <td>{{ $answer->answer_idx }}</td>
-                                                <td>{{ $answer->name }} ( {{ $answer->login }} )</td>
-                                                <td>@if($answer->id == $answer->correct) <b>Верно = </b> @else Не Верно =  @endif {{ $answer->answer }}</td>
-                                                <td>{{ $answer->created_at }}</td>
-                                            </tr>
-                                            @php
-                                                if($answer->id == $answer->correct) {
+										@endphp
+										@foreach($answer_correct as $answer)
+											<tr role="row" class="@if($answer->id == $answer->correct) correct @else not_correct @endif">
+												<td>{{ $answer->answer_idx }}</td>
+												<td>{{ $answer->name }} ( {{ $answer->login }} )</td>
+												<td>{{ $answer->group_id }}</td>
+												<td>@if($answer->id == $answer->correct) <b>Верно = </b> @else Не Верно =  @endif {{ $answer->answer }}</td>
+												<td>{{ $answer->created_at }}</td>
+											</tr>
+											@php
+												if($answer->id == $answer->correct) {
                                                     $correct_num += 1;
                                                 } else {
                                                     $incorrect_num += 1;
                                                 }
-                                            @endphp
-                                        @endforeach
+											@endphp
+										@endforeach
 
-                                    @endif
-                                    </tbody>
-                                </table>
+									@endif
+									</tbody>
+								</table>
 
-                            @else
-                                <table id="dataTable" width="100%" class="table table-hover dataTable no-footer" role="grid" aria-describedby="dataTable_info">
-                                    <thead>
-                                    <tr role="row">
-                                        <th>#</th>
-                                        <th class="sorting">Имя</th>
-                                        <th class="sorting">Ответ</th>
-                                        <th class="sorting">Время</th>
-                                    </thead>
-                                    <tbody>
-                                    @php // dd($pollx) @endphp
-                                    @if(isset($pollx))
-                                        @php $i=1; @endphp
-                                        @foreach($pollx as $answer)
-                                            <tr role="row" class="odd">
-                                                <td>{{ $answer->answer_idx }}</td>
-                                                <td>{{ $answer->name }} ( {{ $answer->login }} )</td>
-                                                @if($answer->answer) <td>{{ $answer->answer }}</td> @endif
-                                                <td>{{ $answer->created_at }}</td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                    </tbody>
-                                </table>
+							@else
+								<table id="dataTable" width="100%" class="table table-hover dataTable no-footer" role="grid" aria-describedby="dataTable_info">
+									<thead>
+									<tr role="row">
+										<th>#</th>
+										<th class="sorting">Имя</th>
+										<th class="sorting">Группа</th>
+										<th class="sorting">Ответ</th>
+										<th class="sorting">Время</th>
+									</thead>
+									<tbody>
+									@php // dd($pollx) @endphp
+									@if(isset($pollx))
+										@php $i=1; @endphp
+										@foreach($pollx as $answer)
+											<tr role="row" class="odd">
+												<td>{{ $answer->answer_idx }}</td>
+												<td>{{ $answer->name }} ( {{ $answer->login }} )</td>
+												<td>{{ $answer->group_id }}</td>
+												@if($answer->answer) <td>{{ $answer->answer }}</td> @endif
+												<td>{{ $answer->created_at }}</td>
+											</tr>
+										@endforeach
+									@endif
+									</tbody>
+								</table>
 
-                                <div class="col-md-6">
-                                    <div class="panel panel-default" data-margin-top="80">
-                                        <div class="panel-title">
-                                            <h2>Результаты опроса</h2>
-                                        </div>
-                                        <div class="panel-body">
-                                            @foreach($poll->questions as $question)
-                                                @php $total_votes = $question->totalVotes(); @endphp
-                                                <h4>{{ $question->question }} <small class="label label-success">{{ $total_votes }}
-                                                        {{--										{{ Str::plural( __('polls.total'), $total_votes)  }}--}}
-                                                    </small></h4>
-                                                <ul class="poll-results">
-                                                    @foreach($question->answers as $answer)
-                                                        @php $percentage = 0; @endphp
-                                                        @if($total_votes != 0)
-                                                            @php $percentage = intval(100*($answer->votes/$total_votes)); @endphp
-                                                        @endif
-                                                        <li>{{ $answer->answer }}<span class="poll-results-meter"><span class="label label-default label-bar" style="width:{{ $percentage }}%">{{ $percentage }}% {{ __('polls.with') }} <b>{{ $answer->votes }}</b> {{ __('polls.votes') }}</span></span></li>
-                                                    @endforeach
-                                                </ul>
-                                            @endforeach
-                                        </div>
+								<div class="col-md-6">
+									<div class="panel panel-default" data-margin-top="80">
+										<div class="panel-title">
+											<h2>Результаты опроса</h2>
+										</div>
+										<div class="panel-body">
+											@foreach($poll->questions as $question)
+												@php $total_votes = $question->totalVotes(); @endphp
+												<h4>{{ $question->question }} <small class="label label-success">{{ $total_votes }}
+														{{--										{{ Str::plural( __('polls.total'), $total_votes)  }}--}}
+													</small></h4>
+												<ul class="poll-results">
+													@foreach($question->answers as $answer)
+														@php $percentage = 0; @endphp
+														@if($total_votes != 0)
+															@php $percentage = intval(100*($answer->votes/$total_votes)); @endphp
+														@endif
+														<li>{{ $answer->answer }}<span class="poll-results-meter"><span class="label label-default label-bar" style="width:{{ $percentage }}%">{{ $percentage }}% {{ __('polls.with') }} <b>{{ $answer->votes }}</b> {{ __('polls.votes') }}</span></span></li>
+													@endforeach
+												</ul>
+											@endforeach
+										</div>
 
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div id="menu1" class="tab-pane fade">
-                        <div class="container-fluid">
-                            @if($poll->type == 'variant')
-                                <div class="col-md-6">
+									</div>
+								</div>
+							@endif
+						</div>
+					</div>
+					<div id="menu1" class="tab-pane fade">
+						<div class="container-fluid">
+							@if($poll->type == 'variant')
+								<div class="col-md-6">
 
-                                    <canvas id="myChart" width="400" height="400"></canvas>
+									<canvas id="myChart" width="400" height="400"></canvas>
 
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div id="menu2" class="tab-pane fade">
-                        <div class="container-fluid">
-                            <div class="col-md-6">
+								</div>
+							@endif
+						</div>
+					</div>
+					<div id="menu2" class="tab-pane fade">
+						<div class="container-fluid">
+							<div class="col-md-6">
 
-                                <canvas id="myChart2" width="400" height="400"></canvas>
+								<canvas id="myChart2" width="400" height="400"></canvas>
 
-                            </div>
-                        </div>
-                    </div>
+							</div>
+						</div>
+					</div>
 
-                </div>
+				</div>
 
 			</div>
 		</div>

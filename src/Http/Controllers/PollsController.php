@@ -65,22 +65,22 @@ class PollsController extends \App\Http\Controllers\Controller
 		//     $poll = $this->getPollData($id);
 		// }
 
-        $answer_correc ="";
-        $pollx = "";
+		$answer_correc ="";
+		$pollx = "";
 
 		if($poll->type == 'variant') {
-            $answer_correct = DB::table('voyager_poll_answers')
-                ->join( 'voyager_poll_questions', 'voyager_poll_answers.question_id', '=', 'voyager_poll_questions.id', 'left' )
-                ->join( 'voyager_poll_answers_users', 'voyager_poll_answers_users.answer_id', '=', 'voyager_poll_answers.id', 'left' )
-                ->join( 'users', 'users.id', '=', 'voyager_poll_answers_users.user_id', '' )
+			$answer_correct = DB::table('voyager_poll_answers')
+			                    ->join( 'voyager_poll_questions', 'voyager_poll_answers.question_id', '=', 'voyager_poll_questions.id', 'left' )
+			                    ->join( 'voyager_poll_answers_users', 'voyager_poll_answers_users.answer_id', '=', 'voyager_poll_answers.id', 'left' )
+			                    ->join( 'users', 'users.id', '=', 'voyager_poll_answers_users.user_id', '' )
 
-                ->select('voyager_poll_answers_users.id as answer_idx', 'voyager_poll_answers_users.created_at as created_at', 'users.name','users.login', 'voyager_poll_questions.question', 'voyager_poll_answers.id','voyager_poll_answers.answer', 'voyager_poll_answers.correct')
-                ->where('voyager_poll_questions.poll_id', '=', $id )
-                ->orderBy('voyager_poll_answers_users.id', 'ASC')
-                ->get();
+			                    ->select('voyager_poll_answers_users.id as answer_idx', 'voyager_poll_answers_users.created_at as created_at', 'users.name','users.group_id','users.login', 'voyager_poll_questions.question', 'voyager_poll_answers.id','voyager_poll_answers.answer', 'voyager_poll_answers.correct')
+			                    ->where('voyager_poll_questions.poll_id', '=', $id )
+			                    ->orderBy('voyager_poll_answers_users.id', 'ASC')
+			                    ->get();
 
-            } else {
-                if($poll->type == 'one_answer') {
+		} else {
+			if($poll->type == 'one_answer') {
 				$pollx = DB::table('voyager_poll_variants')
 				           ->join( 'voyager_poll_questions', 'voyager_poll_variants.question_id', '=', 'voyager_poll_questions.id', 'left' )
 				           ->join( 'users', 'voyager_poll_variants.user_id', '=', 'users.id', 'left' )
@@ -91,14 +91,14 @@ class PollsController extends \App\Http\Controllers\Controller
                     )->get();
 			} else {
 				$pollx =  DB::table('voyager_poll_answers')
-                            ->join( 'voyager_poll_questions', 'voyager_poll_answers.question_id', '=', 'voyager_poll_questions.id')
-                            ->join( 'voyager_poll_answers_users', 'voyager_poll_answers_users.answer_id', '=', 'voyager_poll_answers.id')
-                            ->join( 'users', 'users.id', '=', 'voyager_poll_answers_users.user_id', '' )
+				            ->join( 'voyager_poll_questions', 'voyager_poll_answers.question_id', '=', 'voyager_poll_questions.id')
+				            ->join( 'voyager_poll_answers_users', 'voyager_poll_answers_users.answer_id', '=', 'voyager_poll_answers.id')
+				            ->join( 'users', 'users.id', '=', 'voyager_poll_answers_users.user_id', '' )
 
-                            ->select('voyager_poll_answers_users.created_at as created_at', 'voyager_poll_answers_users.id as answer_idx','users.name','users.id','users.login', 'voyager_poll_questions.question', 'voyager_poll_answers.id','voyager_poll_answers.answer', 'voyager_poll_answers.correct')
-                            ->where('voyager_poll_questions.poll_id', '=', $id )
-                            ->orderBy('voyager_poll_answers_users.id', 'ASC')
-                            ->get();
+				            ->select('voyager_poll_answers_users.created_at as created_at', 'voyager_poll_answers_users.id as answer_idx','users.name','users.id','users.login', 'voyager_poll_questions.question', 'voyager_poll_answers.id','voyager_poll_answers.answer', 'voyager_poll_answers.correct')
+				            ->where('voyager_poll_questions.poll_id', '=', $id )
+				            ->orderBy('voyager_poll_answers_users.id', 'ASC')
+				            ->get();
 			}
 
 			if(!isset($pollx)) {
@@ -238,8 +238,8 @@ class PollsController extends \App\Http\Controllers\Controller
 						if($answer->correct == $answer->id) {
 							$correct = $answer->id;
 						} elseif(!isset($answer->correct)) {
-                            $correct = 0;
-                        } else {
+							$correct = 0;
+						} else {
 							$correct = 0;
 						}
 
